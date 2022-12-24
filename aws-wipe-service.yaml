@@ -5,19 +5,23 @@ Parameters:
   GitUser:
     Type: String
     Description: Git username
+    Default: hosniah
 
   GitRepo:
     Type: String
     Description: Git repository
+    Default: aws-nuke-service
 
   GitBranch:
     Type: String
     Description: Git branch
+    Default: master
 
   GitToken:
     Type: String
     Description: Git OAuthToken
     NoEcho: true
+    Default: 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
 
   AWSNukeVersionNumber:
     Description: The version number of an aws-nuke available release to download
@@ -27,6 +31,7 @@ Parameters:
   AWSNukeConfigFile:
     Description: The directory path to the config file used by aws-nuke
     Type: String
+    Default: aws-nuke-config/config.yaml
 
   AWSNukeProfileName:
     Description: The name of a CLI Profile to setup in AWS CodeBuild
@@ -44,6 +49,7 @@ Parameters:
   NotificationEmailAddress:
     Description: The email address where email notifications should be sent
     Type: String
+    Default: ahmedhosni.contact@gmail.com
 
   WhenToExecute:
     Description: Cron syntax in UTC when the resources will be terminated. #https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
@@ -401,10 +407,11 @@ Resources:
               commands:
                 - ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
                 - echo "Updating AWS Account ID to $ACCOUNT_ID"
+                - ACCOUNT_ALIAS="datascientest-$ACCOUNT_ID"
+                - aws iam create-account-alias --account-alias $ACCOUNT_ALIAS
                 - sed -i "s/0000xx0000/$ACCOUNT_ID/g" $AWS_NukeConfigFile
                 - echo "Executing Nuke...."
                 - aws-nuke --profile $AWS_NukeProfileName --config $AWS_NukeConfigFile --force
-
   CodeBuildLogGroup:
     Type: "AWS::Logs::LogGroup"
     Properties:
