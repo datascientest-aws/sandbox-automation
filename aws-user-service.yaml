@@ -72,6 +72,7 @@ Parameters:
     Type: String
     Description: Do you want to require users to create a new password on first login?
     ConstraintDescription: Must be a boolean value of true or false
+    Default: "false"
     AllowedValues: 
     - "true"
     - "false"
@@ -160,6 +161,131 @@ Resources:
     Properties: 
       UserName: !Ref User
 
+  SESConfigSet:
+    Type: 'AWS::SES::ConfigurationSet'
+    Properties:
+      Name: CustomConfigSet
+
+  LambdaFunctionUserNotification:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: caller
+      Handler: index.handler
+      Role: !GetAtt 'LambdaRole.Arn'
+      Environment:
+        Variables:
+          SES_CONFIG_SET_NAME:
+            Ref: SESConfigSet
+          SES_User_NAME:
+            Ref: User
+          SES_User_Password:
+            Ref: Password
+          SES_User_AccessKey:
+            Ref: AccessKey
+          SES_User_SecretKey: !GetAtt AccessKey.SecretAccessKey
+      Runtime: python3.9
+      Timeout: 60
+      Code:
+        ZipFile: |
+              import os
+              import boto3
+              import json
+              from datetime import datetime
+
+              from_email = "bedwinlab@gmail.com"
+              config_set_name = os.environ["SES_CONFIG_SET_NAME"]
+              user_name = os.environ["SES_User_NAME"]
+              user_pass = os.environ["SES_User_Password"]
+              user_access_key = os.environ["SES_User_AccessKey"]
+              user_secret_key = os.environ["SES_User_SecretKey"]
+              aws_account_id = "1231234"
+
+              client = boto3.client('ses')
+
+              def lambda_handler(event, context):
+
+                  body_html = f"""<html>
+                      <head></head>
+                      <body>
+                        <h2>CYour Datascientest AWS Sandbox is live!</h2>
+                        <br/>
+                        <p>You have been granted access to an aws sandbox environment.
+                        You could login to AWS using the following account id: </p> 
+                        <p> For console access, use the following credentials: {bedwinlab@gmail.com} </p>
+                          - username: {user_name}
+                          - password: {user_pass}
+                        <p>For programatic access, use the following access key and secret key within your aws cli:</p>
+                          - AccessKey: {user_access_key}
+                          - SecretKey: {user_secret_key}
+                        </body>
+                      </html>
+                                  """
+
+                  email_message = {
+                      'Body': {
+                          'Html': {
+                              'Charset': 'utf-8',
+                              'Data': body_html,
+                          },
+                      },
+                      'Subject': {
+                          'Charset': 'utf-8',
+                          'Data': "Your Datascientest AWS Sandbox is ready",
+                      },
+                  }
+
+                  ses_response = client.send_email(
+                      Destination={
+                          'ToAddresses': ['bedwinlab@gmail.com'],
+                      },
+                      Message=email_message,
+                      Source=from_email,
+                      ConfigurationSetName=config_set_name,
+                  )
+                  # print(f"ses response id received: {response['MessageId']}.")
+
+  Primerinvoke:
+    Type: AWS::CloudFormation::CustomResource
+    DependsOn: LambdaFunctionUserNotification
+    Version: "1.0"
+    Properties:
+      ServiceToken: !GetAtt LambdaFunctionUserNotification.Arn
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DatascientestUSerCreationRole
+      Description: An execution role for a Lambda function launched by CloudFormation
+      ManagedPolicyArns:
+        - !Ref LambdaPolicy
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action:
+          - 'sts:AssumeRole'
+        
+  LambdaPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: DatascientestUSerCreationPolicy
+      Description: Managed policy for a Lambda function launched by CloudFormation
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'ses:*'
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogGroup'
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'
+            Resource: '*'
+                      
 
 Outputs:
 
