@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Billing Alerts for your AWS Account
+Description: Billing Alerts for your AWS sandbox, crates 2 cfn stacks via 2 lambda functions to stop Or delete resources. 
 
 Parameters:
   Email:
@@ -18,9 +18,30 @@ Parameters:
   CriticalLevel:
     Type: String
     Default: "200"
-    Description: The Critical level of Billing alarm, this would trigger the nuke CodePipeline processÒ
+    Description: The Critical level of Billing alarm, this would trigger the nuke CodePipeline process
+  S3BucketName:
+    Type: String
+    Default: "cf-template-datascientest-sandboxes"
+    Description: Provide a unique name for the S3 Bucket that will contains the Cloudformation templates for the sandbox management.
 
 Resources:
+  #S3 bucket for cloudformation templates
+  TemplatesS3Bucket:
+    DeletionPolicy: Retain
+    Type: 'AWS::S3::Bucket'
+    Description: Creating Amazon S3 bucket for CloudFormation templates
+    Properties:
+      BucketName: !Ref S3BucketName
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+  
+  # Alert for the warning level: Freeze the resources
   BillingAlert:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -38,11 +59,12 @@ Resources:
       EvaluationPeriods: 1
       MetricName: EstimatedCharges
       Namespace: AWS/Billing
-      Period: 300
+      Period: 30
       TreatMissingData: ignore
       Statistic: Maximum
       Threshold:  !Ref WarningLevel 
 
+  # Alert for the Critical level: Delete all the resources
   BillingNukeAlert:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -60,12 +82,12 @@ Resources:
       EvaluationPeriods: 1
       MetricName: EstimatedCharges
       Namespace: AWS/Billing
-      Period: 300
+      Period: 30
       TreatMissingData: ignore
       Statistic: Maximum
       Threshold:  !Ref CriticalLevel 
 
-  # Define the SNS topic for warning billing
+  # Define the SNS topic for warning billing 
   MySnsTopic:
     Type: AWS::SNS::Topic
     Properties:
@@ -89,7 +111,7 @@ Resources:
       FunctionName: !Ref TopicConsumerNuke
       Principal: sns.amazonaws.com
 
-  # Define the consumer Lambda function
+  # Define the consumer Lambda function for Nuke
   TopicConsumerNuke:
     Type: 'AWS::Lambda::Function'
     Properties:
@@ -100,7 +122,7 @@ Resources:
       Layers: ["arn:aws:lambda:us-east-1:744348701589:layer:bash:8"]
       MemorySize: 2048
       Code:
-        S3Bucket: cf-template-sandboxes
+        S3Bucket: cfn-datascientest-template-sandboxes
         S3Key: nuke.zip
 
   # Provide permission for SNS to invoke the Lambda function
@@ -111,7 +133,7 @@ Resources:
       FunctionName: !Ref TopicConsumerFunction1
       Principal: sns.amazonaws.com
 
-  # Define the consumer Lambda function
+  # Define the consumer Lambda function for warning freeze resources
   TopicConsumerFunction1:
     Type: 'AWS::Lambda::Function'
     Properties:
@@ -122,7 +144,7 @@ Resources:
       Layers: ["arn:aws:lambda:us-east-1:744348701589:layer:bash:8"]
       MemorySize: 2048
       Code:
-        S3Bucket: cf-template-sandboxes
+        S3Bucket: cfn-datascientest-template-sandboxes
         S3Key: custom.zip
 
   LambdaFunctionRole:
@@ -160,6 +182,24 @@ Resources:
             - 'sns:Receive'
             - 'sns:Unsubscribe'
             Resource: "*"
+
+# SNS TOpics and Subscriptions for Notification
+  BillingEmailAlertTopic:
+    Type: AWS::SNS::Topic
+
+  AlarmSubscriberAdminEmail:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !Ref Email
+      Protocol: email
+      TopicArn: !Ref BillingEmailAlertTopic
+
+  AlarmSubscriberStudentEmail:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !Ref EmailStudent
+      Protocol: email
+      TopicArn: !Ref BillingEmailAlertTopic
 
 Outputs:
   TopicConsumerFunction1Name:
