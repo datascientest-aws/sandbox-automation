@@ -7,11 +7,21 @@ Parameters:
     Default: your@email.com
     Description: Your email address to receive alarms per email
 
+  WarningThreshold:
+    Description: The billing amount considered as a warning to start the aws-freeze pipeline
+    Type: String
+    Default: 100
+
+  CriticalThreshold:
+    Description: The maximum billing amount to make the user ReadOnly and trigger the aws-wipe pipeline
+    Type: String
+    Default: 150
+
 Mappings:
   EstimatedCharges:
     AlarmRange:     
-      "One" : 100      # It will trigger an alarm if your billing gets higher than $100
-      "Two" : 150      # It will trigger an alarm if your billing gets higher than $150
+      "One" : !Ref WarningThreshold      # It will trigger an alarm if your billing gets higher than $100
+      "Two" : !Ref CriticalThreshold     # It will trigger an alarm if your billing gets higher than $150
 
 Resources:
   BillingAlertOne:
@@ -97,6 +107,7 @@ Resources:
           	  }           
             });
           }
+          
   LambdaFunctionRole:
     Type: AWS::IAM::Role
     Properties:

@@ -305,7 +305,7 @@ Resources:
             Owner: "hosniah"
             Repo: "aws-nuke-service"
             Branch: master
-            OAuthToken: "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"
+            OAuthToken: "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"
             PollForSourceChanges: false
           OutputArtifacts:
           - Name: Source
