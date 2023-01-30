@@ -206,7 +206,6 @@ Resources:
           SES_User_AccessKey:
             Ref: AccessKey
           SES_User_SecretKey: !GetAtt AccessKey.SecretAccessKey
-          AWS_Account_id: !Ref AWS::AccountID
       Runtime: python3.9
       Timeout: 60
       Code:
@@ -223,9 +222,9 @@ Resources:
               user_pass = os.environ["SES_User_Password"]
               user_access_key = os.environ["SES_User_AccessKey"]
               user_secret_key = os.environ["SES_User_SecretKey"]
-              user_aws_account_id = os.environ["AWS_Account_id"]
 
               def lambda_handler(event, context):
+                  user_aws_account_id = boto3.client("sts").get_caller_identity()["Account"]
 
                   body_html = f"""<html>
                       <head></head>
