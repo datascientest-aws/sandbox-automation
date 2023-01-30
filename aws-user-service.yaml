@@ -90,6 +90,11 @@ Parameters:
     ConstraintDescription: This parameter allows a string of characters consisting of upper and lowercase alphanumeric characters with no spaces, and the following special characters [\w+=,.@-]+
     Default: "None"
 
+  SESFromEmail:
+    Description: Email to be used for sending the AWS SES notification once the IAM user is created
+    Type: String
+    AllowedPattern: '[^@]+@[^@]+\.[^@]+'
+    Default: "bedwinlab@gmail.com"
 
 Mappings:
 
@@ -166,14 +171,33 @@ Resources:
     Properties:
       Name: CustomConfigSet
 
+  S3GithubTemplatesName:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - "-"
+        - - "cfn-datascientest-sandbox-templates-repo"
+          - !Select
+            - 0
+            - !Split
+              - "-"
+              - !Select
+                - 2
+                - !Split
+                  - "/"
+                  - !Ref "AWS::StackId"
+
+  
   LambdaFunctionUserNotification:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: caller
-      Handler: index.handler
+      Handler: index.lambda_handler
       Role: !GetAtt 'LambdaRole.Arn'
       Environment:
         Variables:
+          SES_FROM_EMAIL:
+            Ref: SESFromEmail
           SES_CONFIG_SET_NAME:
             Ref: SESConfigSet
           SES_User_NAME:
@@ -192,13 +216,12 @@ Resources:
               import json
               from datetime import datetime
 
-              from_email = "bedwinlab@gmail.com"
+              from_email = os.environ["SES_FROM_EMAIL"]
               config_set_name = os.environ["SES_CONFIG_SET_NAME"]
               user_name = os.environ["SES_User_NAME"]
               user_pass = os.environ["SES_User_Password"]
               user_access_key = os.environ["SES_User_AccessKey"]
               user_secret_key = os.environ["SES_User_SecretKey"]
-              aws_account_id = "1231234"
 
               client = boto3.client('ses')
 
@@ -244,12 +267,12 @@ Resources:
                   )
                   # print(f"ses response id received: {response['MessageId']}.")
 
-  Primerinvoke:
-    Type: AWS::CloudFormation::CustomResource
-    DependsOn: LambdaFunctionUserNotification
-    Version: "1.0"
-    Properties:
-      ServiceToken: !GetAtt LambdaFunctionUserNotification.Arn
+ # Primerinvoke:
+ #   Type: AWS::CloudFormation::CustomResource
+ #   DependsOn: LambdaFunctionUserNotification
+ #   Version: "1.0"
+ #   Properties:
+ #     ServiceToken: !GetAtt LambdaFunctionUserNotification.Arn
 
   LambdaRole:
     Type: AWS::IAM::Role
@@ -278,6 +301,7 @@ Resources:
           - Effect: Allow
             Action:
               - 'ses:*'
+              - 's3:*'
             Resource: '*'
           - Effect: Allow
             Action:
@@ -285,7 +309,93 @@ Resources:
               - 'logs:CreateLogStream'
               - 'logs:PutLogEvents'
             Resource: '*'
-                      
+                  
+  # Define the consumer Lambda function for filling S3 sandbox and invoking the user lambda defined above 
+  SandboxInitConsumerFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: sandboxTrigger
+      Handler: index.lambda_handler
+      Role: !GetAtt 'LambdaRole.Arn'
+      MemorySize: 2048
+      Runtime: python3.9
+      Timeout: 60
+      Environment:
+        Variables:
+          S3_GITHUB_TEMPLATES_NAME:
+            Ref: S3GithubTemplatesName
+      Code:
+        ZipFile: |
+                import os
+                import boto3
+                import json
+                import urllib.request
+                from zipfile import ZipFile
+                import tempfile
+
+                s3 = boto3.client('s3')
+
+                def lambda_handler(event, context):
+                  bucket_name = os.environ["S3_GITHUB_TEMPLATES_NAME"]
+                  print("Download first layer files")
+                  temppath = tempfile.gettempdir()
+
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/custom-layer/index.sh', "index.sh")
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/custom-layer/bootstrap', "bootstrap")
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/custom-layer/README.md', "README.md")
+
+                  # update lambda name in index.sh using the new variable
+                  with ZipFile(temppath+'/'+'custom.zip','w') as zip:
+                  # writing each file one by one
+                    zip.write(temppath+'/index.sh')
+                    zip.write(temppath+'/README.md')
+                    zip.write(temppath+'/bootstrap')
+                    
+                  s3.put_object(Bucket=bucket_name, Key="custom.zip", StorageClass='REDUCED_REDUNDANCY', Body=open(temppath+'/custom.zip', 'rb'))
+                  #upload_2_s3('https://github.com/datascientest-aws/sandbox-automation/raw/main/custom-layer/custom.zip', "custom.zip")
+
+                  print("Download second layer files")
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/nuke-layer/README.md', "README.md")
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/nuke-layer/index.sh', "index.sh")
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/nuke-layer/bootstrap', "bootstrap")
+
+                  # update lambda name in index.sh using the new variable
+                  with ZipFile(temppath+'/'+'nuke.zip','w') as zip:
+                  # writing each file one by one
+                    zip.write(temppath+'/index.sh')
+                    zip.write(temppath+'/README.md')
+                    zip.write(temppath+'/bootstrap')
+                  #upload_2_s3('https://github.com/datascientest-aws/sandbox-automation/blob/main/nuke-layer/nuke.zip', "nuke.zip")
+                  s3.put_object(Bucket=bucket_name, Key="nuke.zip", StorageClass='REDUCED_REDUNDANCY', Body=open(temppath+'/nuke.zip', 'rb'))
+
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/aws-alerting-service.yaml', "aws-alerting-service.yaml")  
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/aws-billing-alert.yml', "aws-billing-alert.yml")  
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/aws-freeze-service.yaml', "aws-freeze-service.yaml")  
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/aws-wipe-service.yaml', "aws-wipe-service.yaml")  
+                  upload_2_s3('https://raw.githubusercontent.com/datascientest-aws/sandbox-automation/main/aws-user-service.yaml',"aws-user-service.yaml")
+
+                def update_S3_name(filename):
+                  temppath = tempfile.gettempdir()
+                  bucket_name = os.environ["S3_GITHUB_TEMPLATES_NAME"]+'.s3.amazonaws.com'
+                  fin = open(temppath+"/"+filename, "rt")
+                  data = fin.read()
+                  data = data.replace('cf-template-datascientest-sandboxes.s3.amazonaws.com', bucket_name)
+                  fin.close()
+                  fin = open(temppath+"/"+filename, "wt")
+                  fin.write(data)
+                  fin.close()
+
+                def upload_2_s3(file_url, name):
+                    bucket_name = os.environ["S3_GITHUB_TEMPLATES_NAME"]
+                    # Download and Create file in temp path
+                    temppath = tempfile.gettempdir()
+                    urllib.request.urlretrieve(file_url, temppath+'/'+name)
+                    if name == 'index.sh':
+                      update_S3_name(name)
+                    print("# - Process AWS S3 upload")
+                    s3.put_object(Bucket=bucket_name, Key=name,
+                                  StorageClass='REDUCED_REDUNDANCY',
+                                  Body=open(temppath+'/'+name, 'rb'))
 
 Outputs:
 
