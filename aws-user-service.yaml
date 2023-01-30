@@ -207,14 +207,16 @@ Resources:
           SES_User_AccessKey:
             Ref: AccessKey
           SES_User_SecretKey: !GetAtt AccessKey.SecretAccessKey
+          AWS-Account-id: !Ref AWS::AccountId
       Runtime: python3.9
       Timeout: 60
       Code:
         ZipFile: |
               import os
               import boto3
-              import json
-              from datetime import datetime
+              import smtplib
+              from email.mime.multipart import MIMEMultipart
+              from email.mime.text import MIMEText
 
               from_email = os.environ["SES_FROM_EMAIL"]
               config_set_name = os.environ["SES_CONFIG_SET_NAME"]
@@ -222,57 +224,50 @@ Resources:
               user_pass = os.environ["SES_User_Password"]
               user_access_key = os.environ["SES_User_AccessKey"]
               user_secret_key = os.environ["SES_User_SecretKey"]
-
-              client = boto3.client('ses')
+              user_aws_account_id = os.environ["AWS-Account-id"]
 
               def lambda_handler(event, context):
 
                   body_html = f"""<html>
                       <head></head>
                       <body>
-                        <h2>CYour Datascientest AWS Sandbox is live!</h2>
+                        <h2>Your Datascientest AWS Sandbox is live!</h2>
                         <br/>
                         <p>You have been granted access to an aws sandbox environment.
-                        You could login to AWS using the following account id: </p> 
-                        <p> For console access, use the following credentials: {bedwinlab@gmail.com} </p>
-                          - username: {user_name}
-                          - password: {user_pass}
+                        You could login to AWS using the following AWS account id: <b> {user_aws_account_id} </b> </p> 
+                        <p> For console access, use the following credentials:</p>
+                          - <b>username </b>: {user_name}
+                          - <b>password </b>: {user_pass}
                         <p>For programatic access, use the following access key and secret key within your aws cli:</p>
-                          - AccessKey: {user_access_key}
-                          - SecretKey: {user_secret_key}
+                          - <b>AccessKey </b>: {user_access_key}
+                          - <b>SecretKey </b>: {user_secret_key}
                         </body>
                       </html>
                                   """
 
-                  email_message = {
-                      'Body': {
-                          'Html': {
-                              'Charset': 'utf-8',
-                              'Data': body_html,
-                          },
-                      },
-                      'Subject': {
-                          'Charset': 'utf-8',
-                          'Data': "Your Datascientest AWS Sandbox is ready",
-                      },
-                  }
+                  gmail_user = 'bedwinlab@gmail.com'
+                  gmail_password = 'nkguuskvxboqsjim'
+                  to = "ahmedhosni.contact@gmail.com"
 
-                  ses_response = client.send_email(
-                      Destination={
-                          'ToAddresses': ['bedwinlab@gmail.com'],
-                      },
-                      Message=email_message,
-                      Source=from_email,
-                      ConfigurationSetName=config_set_name,
-                  )
-                  # print(f"ses response id received: {response['MessageId']}.")
+                  msg = MIMEMultipart('alternative')
+                  msg['Subject'] = 'Your Datascientest AWS Sandbox is ready'
+                  msg['From'] = gmail_user
+                  msg['To'] = to
 
- # Primerinvoke:
- #   Type: AWS::CloudFormation::CustomResource
- #   DependsOn: LambdaFunctionUserNotification
- #   Version: "1.0"
- #   Properties:
- #     ServiceToken: !GetAtt LambdaFunctionUserNotification.Arn
+                  part1 = MIMEText(body_html, 'html') 
+                  msg.attach(part1)
+
+                  try:
+                      server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+                      server.ehlo()
+                      server.login(gmail_user, gmail_password)
+                      server.sendmail(gmail_user,  to , msg.as_string())
+                      server.close()
+                  
+                      print('Email sent!')
+                  except:
+                      print('Something went wrong...')
+
 
   LambdaRole:
     Type: AWS::IAM::Role
