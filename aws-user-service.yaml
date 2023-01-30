@@ -186,7 +186,6 @@ Resources:
                 - !Split
                   - "/"
                   - !Ref "AWS::StackId"
-
   
   LambdaFunctionUserNotification:
     Type: AWS::Lambda::Function
@@ -207,7 +206,7 @@ Resources:
           SES_User_AccessKey:
             Ref: AccessKey
           SES_User_SecretKey: !GetAtt AccessKey.SecretAccessKey
-          AWS-Account-id: !Ref AWS::AccountId
+          AWS_Account_id: !Ref AWS::AccountID
       Runtime: python3.9
       Timeout: 60
       Code:
@@ -224,7 +223,7 @@ Resources:
               user_pass = os.environ["SES_User_Password"]
               user_access_key = os.environ["SES_User_AccessKey"]
               user_secret_key = os.environ["SES_User_SecretKey"]
-              user_aws_account_id = os.environ["AWS-Account-id"]
+              user_aws_account_id = os.environ["AWS_Account_id"]
 
               def lambda_handler(event, context):
 
@@ -247,7 +246,7 @@ Resources:
 
                   gmail_user = 'bedwinlab@gmail.com'
                   gmail_password = 'nkguuskvxboqsjim'
-                  to = "ahmedhosni.contact@gmail.com"
+                  to = "noreply@datascientest.com"
 
                   msg = MIMEMultipart('alternative')
                   msg['Subject'] = 'Your Datascientest AWS Sandbox is ready'
@@ -267,7 +266,6 @@ Resources:
                       print('Email sent!')
                   except:
                       print('Something went wrong...')
-
 
   LambdaRole:
     Type: AWS::IAM::Role
