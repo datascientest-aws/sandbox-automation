@@ -13,8 +13,8 @@ fi
  
 # read command will prompt you to enter the name of bucket name you wish to create 
  
-read -r -p  "Enter the name of the sandbox user:" username
-read -r -p  "Enter the sandbox user  password:" userpass
+read -r -p  "* Enter the name of the sandbox user:" username
+read -r -p  "* Enter the sandbox user  password:" userpass
 
 # Creating first function to create a bucket 
 
@@ -49,13 +49,34 @@ function invokeConfigLambda()    {
  #   --payload '{ "name": "Bob" }' \
 }
  
-# echo command will print on the screen 
- 
-echo "Creating the AWS Sandbox user and preparing the sandbox config !! "
+function setupAlerts()
+{
+   read -r -p  "* Enter the billing critical level (This triggers the aws nuke pipeline) :" critical_level
+   read -r -p  "* Enter the billing warning level (This will stop running resources) :" warning_level
+   read -r -p  "* Enter the email of the sandbox user to notify (Student email): " email_student
+   read -r -p  "* Enter the datascientest admin email to notify :" email_datascientest
+
+   #Fetch the S3 bucket name, it has been createed randomly by the first stack:
+   S3BucketName=$(aws s3api list-buckets --query 'Buckets[*].[Name]' --output text | grep "cfn-datascientest-sandbox-templates-repo" | head -n 1)
+
+   aws cloudformation create-stack \
+  --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" "CAPABILITY_AUTO_EXPAND" \
+  --stack-name sandbox-setuo-billing-alerts --template-body file://aws-alerting-service.yaml\
+  --parameters ParameterKey=CriticalLevel,ParameterValue=$critical_level  ParameterKey=WarningLevel,ParameterValue=$warning_level \
+    ParameterKey=Email,ParameterValue=$email_datascientest  ParameterKey=EmailStudent,ParameterValue=$email_student  \
+    ParameterKey=S3BucketName,ParameterValue=$S3BucketName  \
+  --region eu-west-3
+
+   echo "Waiting until the billing alerts stack status is CREATE_COMPLETE ..."
+   sleep 90
+} 
+
+echo "** Creating the AWS Sandbox user and preparing the sandbox config !! "
 echo ""
 initsandbox    # Calling the createbucket function  
 invokeUserLambda
 invokeConfigLambda
+setupAlerts
 
 #tagbucket       # calling our tagbucket function
-echo "The sandbox-inint-stack AWS Cloudformation stack has been created successfully"
+echo "** The sandbox-inint-stack AWS Cloudformation stack has been created successfully!"
