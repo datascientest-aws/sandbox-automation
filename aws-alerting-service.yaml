@@ -25,22 +25,6 @@ Parameters:
     Description: Provide a unique name for the S3 Bucket that will contains the Cloudformation templates for the sandbox management.
 
 Resources:
-  #S3 bucket for cloudformation templates
-  TemplatesS3Bucket:
-    DeletionPolicy: Retain
-    Type: 'AWS::S3::Bucket'
-    Description: Creating Amazon S3 bucket for CloudFormation templates
-    Properties:
-      BucketName: !Ref S3BucketName
-      AccessControl: Private
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      VersioningConfiguration:
-        Status: Enabled
-  
   # Alert for the warning level: Freeze the resources
   BillingAlert:
     Type: AWS::CloudWatch::Alarm
