@@ -19,6 +19,7 @@ read -r -p  "* Enter the billing warning level (This will stop running resources
 read -r -p  "* Enter the billing critical level (This triggers the aws nuke pipeline) :" critical_level
 read -r -p  "* Enter the email of the sandbox user to notify (Student email): " email_student
 read -r -p  "* Enter the datascientest admin email to notify :" email_datascientest
+read -r -p  "* Enter a valid Github token :"  GITHUBToken
 
 
 # Creating first function to create a bucket 
@@ -69,7 +70,7 @@ function setupAlerts()
   --stack-name sandbox-setup-billing-alerts --template-body file://aws-alerting-service.yaml\
   --parameters ParameterKey=CriticalLevel,ParameterValue=$critical_level  ParameterKey=WarningLevel,ParameterValue=$warning_level \
     ParameterKey=Email,ParameterValue=$email_datascientest  ParameterKey=EmailStudent,ParameterValue=$email_student  \
-    ParameterKey=S3BucketName,ParameterValue=$S3BucketName  \
+    ParameterKey=S3BucketName,ParameterValue=$S3BucketName  ParameterKey=GITHUBToken,ParameterValue=$GITHUBToken\
   --region eu-west-3
 
    echo "Waiting until the billing alerts stack status is CREATE_COMPLETE ..."

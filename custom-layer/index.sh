@@ -27,9 +27,11 @@ function handler () {
       aws iam add-user-to-group --user-name $user --group-name $group_name
     done
 
+    #GITHUBToken should be added as an environment variable to this lambda.
+
     # Create the codepipeline freeze process to start freezing resources 
     aws cloudformation create-stack --stack-name cfn-freeze-stack  \
     --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
     --template-url https://cf-template-datascientest-sandboxes.s3.amazonaws.com/aws-freeze-service.yaml  \
-    --parameters ParameterKey=NotificationEmailAddress,ParameterValue='dst-student@datascientest.com' ParameterKey=WhenToExecute,ParameterValue='cron(0 0 * * ? *)' ParameterKey=RetentionInDays,ParameterValue=14 ParameterKey=AWSFreezeProfileName,ParameterValue=freeze
+    --parameters  ParameterKey=GitToken,ParameterValue=$GITHUBToken ParameterKey=NotificationEmailAddress,ParameterValue='dst-student@datascientest.com' ParameterKey=WhenToExecute,ParameterValue='cron(0 0 * * ? *)' ParameterKey=RetentionInDays,ParameterValue=14 ParameterKey=AWSFreezeProfileName,ParameterValue=freeze
 }
