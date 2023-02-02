@@ -46,8 +46,7 @@ function invokeUserLambda()    {
 function invokeConfigLambda()    {
    aws lambda invoke \
     --function-name sandboxTrigger \
-    --region eu-west-3 \
-    response2.json
+    --region eu-west-3 
 
  #   --payload '{ "name": "Bob" }' \
 }
@@ -64,7 +63,7 @@ function setupAlerts()
 
    aws cloudformation create-stack \
   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" "CAPABILITY_AUTO_EXPAND" \
-  --stack-name sandbox-setuo-billing-alerts --template-body file://aws-alerting-service.yaml\
+  --stack-name sandbox-setup-billing-alerts --template-body file://aws-alerting-service.yaml\
   --parameters ParameterKey=CriticalLevel,ParameterValue=$critical_level  ParameterKey=WarningLevel,ParameterValue=$warning_level \
     ParameterKey=Email,ParameterValue=$email_datascientest  ParameterKey=EmailStudent,ParameterValue=$email_student  \
     ParameterKey=S3BucketName,ParameterValue=$S3BucketName  \
