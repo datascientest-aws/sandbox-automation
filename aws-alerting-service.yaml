@@ -103,7 +103,7 @@ Resources:
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
       Timeout: 30
-      Layers: ["arn:aws:lambda:us-east-1:744348701589:layer:bash:8"]
+      Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
       Code:
         S3Bucket: cfn-datascientest-template-sandboxes
@@ -125,7 +125,7 @@ Resources:
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
       Timeout: 30
-      Layers: ["arn:aws:lambda:us-east-1:744348701589:layer:bash:8"]
+      Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
       Code:
         S3Bucket: cfn-datascientest-template-sandboxes
