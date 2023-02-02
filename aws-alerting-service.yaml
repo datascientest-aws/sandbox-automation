@@ -106,7 +106,7 @@ Resources:
       Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
       Code:
-        S3Bucket: cfn-datascientest-template-sandboxes
+        S3Bucket: !Ref S3BucketName
         S3Key: nuke.zip
 
   # Provide permission for SNS to invoke the Lambda function
@@ -128,7 +128,7 @@ Resources:
       Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
       Code:
-        S3Bucket: cfn-datascientest-template-sandboxes
+        S3Bucket: !Ref S3BucketName
         S3Key: custom.zip
 
   LambdaFunctionRole:
