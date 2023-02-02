@@ -38,8 +38,8 @@ function initsandbox()
 function invokeUserLambda()    {
    aws lambda invoke \
     --function-name caller \
-    --region eu-west-3 \ 
-    response1.json
+    --region eu-west-3 
+    #  response1.json
 }
 
 # Creating Second function to tag a bucket 
