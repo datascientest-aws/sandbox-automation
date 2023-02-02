@@ -37,7 +37,7 @@ Resources:
       EvaluationPeriods: 1
       MetricName: EstimatedCharges
       Namespace: AWS/Billing
-      Period: 300
+      Period: 600
       TreatMissingData: breaching
       Statistic: Maximum
       Threshold: !FindInMap [EstimatedCharges, AlarmRange, One]
@@ -56,7 +56,7 @@ Resources:
       MetricName: EstimatedCharges
       Namespace: AWS/Billing
       TreatMissingData: breaching
-      Period: 300
+      Period: 600
       Statistic: Maximum
       Threshold: !FindInMap [EstimatedCharges, AlarmRange, Two]
 
