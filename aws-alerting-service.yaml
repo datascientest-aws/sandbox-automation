@@ -25,7 +25,7 @@ Parameters:
     Description: Provide a unique name for the S3 Bucket that will contains the Cloudformation templates for the sandbox management.
   GITHUBToken:
     Type: String
-    Default: "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"
+    Default: "*****************"
     Description: Provide a valid GithubToken to fetch templates
 
 Resources:
