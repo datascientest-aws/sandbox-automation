@@ -14,10 +14,10 @@ Parameters:
 #    Type: String
 #    Description: Git branch
 
-#  GitToken:
-#    Type: String
-#    Description: Git OAuthToken
-#    NoEcho: true
+  GitToken:
+    Type: String
+    Description: Git OAuthToken
+    NoEcho: true
   AWSFreezeProfileName:
     Description: The name of a CLI Profile to setup in AWS CodeBuild
     Type: String
@@ -305,7 +305,7 @@ Resources:
             Owner: "antho-data"
             Repo: "aws-nuke-service"
             Branch: master
-            OAuthToken: "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"
+            OAuthToken: !Ref GitToken
             PollForSourceChanges: false
           OutputArtifacts:
           - Name: Source

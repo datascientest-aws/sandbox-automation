@@ -23,6 +23,10 @@ Parameters:
     Type: String
     Default: "cf-template-datascientest-sandboxes"
     Description: Provide a unique name for the S3 Bucket that will contains the Cloudformation templates for the sandbox management.
+  GITHUBToken:
+    Type: String
+    Default: "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"
+    Description: Provide a valid GithubToken to fetch templates
 
 Resources:
   # Alert for the warning level: Freeze the resources
@@ -105,6 +109,10 @@ Resources:
       Timeout: 30
       Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
+      Environment:
+        Variables:
+          GITHUBToken:
+            Ref: GITHUBToken
       Code:
         S3Bucket: !Ref S3BucketName
         S3Key: nuke.zip
@@ -127,6 +135,10 @@ Resources:
       Timeout: 30
       Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
+      Environment:
+        Variables:
+          GITHUBToken:
+            Ref: GITHUBToken
       Code:
         S3Bucket: !Ref S3BucketName
         S3Key: custom.zip
