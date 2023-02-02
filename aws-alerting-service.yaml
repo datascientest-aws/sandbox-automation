@@ -25,7 +25,7 @@ Parameters:
     Description: Provide a unique name for the S3 Bucket that will contains the Cloudformation templates for the sandbox management.
   GITHUBToken:
     Type: String
-    Default: "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"
+    Default: "*****************"
     Description: Provide a valid GithubToken to fetch templates
 
 Resources:
@@ -33,6 +33,9 @@ Resources:
   BillingAlert:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       AlarmActions:
         - !Ref MySnsTopic
       AlarmDescription:
@@ -56,6 +59,9 @@ Resources:
   BillingNukeAlert:
     Type: AWS::CloudWatch::Alarm
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       AlarmActions:
         - !Ref MyNukeTopic
       AlarmDescription:
@@ -79,6 +85,9 @@ Resources:
   MySnsTopic:
     Type: AWS::SNS::Topic
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       Subscription:
         - Protocol: lambda
           Endpoint: !GetAtt TopicConsumerFunction1.Arn   
@@ -87,6 +96,9 @@ Resources:
   MyNukeTopic:
     Type: AWS::SNS::Topic
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       Subscription:
         - Protocol: lambda
           Endpoint: !GetAtt TopicConsumerNuke.Arn  
@@ -103,6 +115,9 @@ Resources:
   TopicConsumerNuke:
     Type: 'AWS::Lambda::Function'
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
@@ -129,6 +144,9 @@ Resources:
   TopicConsumerFunction1:
     Type: 'AWS::Lambda::Function'
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
@@ -146,6 +164,9 @@ Resources:
   LambdaFunctionRole:
     Type: AWS::IAM::Role
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -180,10 +201,13 @@ Resources:
             - 'sns:Unsubscribe'
             Resource: "*"
 
-# SNS TOpics and Subscriptions for Notification
+# SNS Topics and Subscriptions for Notification
   BillingEmailAlertTopic:
     Type: AWS::SNS::Topic
-
+    properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
   AlarmSubscriberAdminEmail:
     Type: AWS::SNS::Subscription
     Properties:
