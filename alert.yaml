@@ -26,6 +26,9 @@ Resources:
           "",
           [Alert for $,  !Ref WarningLevel ],
         ]
+      Tags: 
+        - Key: "management"
+          Value: "student"
       ComparisonOperator: GreaterThanThreshold
       Dimensions:
         - Name: Currency
@@ -44,11 +47,17 @@ Resources:
   LambdaFunction:
     Type: 'AWS::Lambda::Function'
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student"
       FunctionName: AwsLambdaMinimalExample
       Handler: index.handler
       Runtime: nodejs14.x
       Role: !GetAtt LambdaFunctionRole.Arn
       MemorySize: 1024
+      Tags: 
+        - Key: "management"
+          Value: "student"
       Code:
         ZipFile: |
           exports.handler = async (event) => {
@@ -57,6 +66,9 @@ Resources:
   LambdaFunctionRole:
     Type: AWS::IAM::Role
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student"
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -85,7 +97,6 @@ Resources:
             - 'sns:Receive'
             - 'sns:Unsubscribe'
             Resource: !Ref BillingAlertTopic
-  
   AlarmSubscriberAdminEmail:
     Type: AWS::SNS::Subscription
     Properties:
