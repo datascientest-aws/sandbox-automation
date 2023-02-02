@@ -348,9 +348,9 @@ Resources:
                   # update lambda name in index.sh using the new variable
                   with ZipFile(temppath+'/'+'custom.zip','w') as zip:
                   # writing each file one by one
-                    zip.write(temppath+'/index.sh')
-                    zip.write(temppath+'/README.md')
-                    zip.write(temppath+'/bootstrap')
+                    zip.write(temppath+'/index.sh', 'index.sh')
+                    zip.write(temppath+'/README.md', 'README.md')
+                    zip.write(temppath+'/bootstrap', 'bootstrap')
                     
                   s3.put_object(Bucket=bucket_name, Key="custom.zip", StorageClass='REDUCED_REDUNDANCY', Body=open(temppath+'/custom.zip', 'rb'))
                   #upload_2_s3('https://github.com/datascientest-aws/sandbox-automation/raw/main/custom-layer/custom.zip', "custom.zip")
@@ -363,9 +363,9 @@ Resources:
                   # update lambda name in index.sh using the new variable
                   with ZipFile(temppath+'/'+'nuke.zip','w') as zip:
                   # writing each file one by one
-                    zip.write(temppath+'/index.sh')
-                    zip.write(temppath+'/README.md')
-                    zip.write(temppath+'/bootstrap')
+                    zip.write(temppath+'/index.sh', 'index.sh')
+                    zip.write(temppath+'/README.md', 'README.md')
+                    zip.write(temppath+'/bootstrap', 'bootstrap')
                   #upload_2_s3('https://github.com/datascientest-aws/sandbox-automation/blob/main/nuke-layer/nuke.zip', "nuke.zip")
                   s3.put_object(Bucket=bucket_name, Key="nuke.zip", StorageClass='REDUCED_REDUNDANCY', Body=open(temppath+'/nuke.zip', 'rb'))
 
