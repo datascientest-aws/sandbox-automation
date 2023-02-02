@@ -94,7 +94,13 @@ Parameters:
     Description: Email to be used for sending the AWS SES notification once the IAM user is created
     Type: String
     AllowedPattern: '[^@]+@[^@]+\.[^@]+'
-    Default: "beldwinlab@gmail.com"
+    Default: "dst-student@gmail.com"
+
+  SESToEmail:
+    Description: Email to be used for sending the AWS SES notification once the IAM user is created
+    Type: String
+    AllowedPattern: '[^@]+@[^@]+\.[^@]+'
+    Default: "dst-student@gmail.com"
 
 Mappings:
 
@@ -197,6 +203,8 @@ Resources:
         Variables:
           SES_FROM_EMAIL:
             Ref: SESFromEmail
+          SES_TO_EMAIL:
+            Ref: SESToEmail
           SES_CONFIG_SET_NAME:
             Ref: SESConfigSet
           SES_User_NAME:
@@ -217,6 +225,7 @@ Resources:
               from email.mime.text import MIMEText
 
               from_email = os.environ["SES_FROM_EMAIL"]
+              to_email = os.environ["SES_TO_EMAIL"]
               config_set_name = os.environ["SES_CONFIG_SET_NAME"]
               user_name = os.environ["SES_User_NAME"]
               user_pass = os.environ["SES_User_Password"]
@@ -243,9 +252,9 @@ Resources:
                       </html>
                                   """
 
-                  gmail_user = 'bedwinlab@gmail.com'
-                  gmail_password = 'nkguuskvxboqsjim'
-                  to = "dst-student@datascientest.com"
+                  gmail_user = 'dst-student@datascientest.com'
+                  gmail_password = 'cvljwledvuhxlvcd'
+                  to = to_email
 
                   msg = MIMEMultipart('alternative')
                   msg['Subject'] = 'Your Datascientest AWS Sandbox is ready'

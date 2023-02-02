@@ -15,6 +15,7 @@ fi
  
 read -r -p  "* Enter the name of the sandbox user:" username
 read -r -p  "* Enter the sandbox user  password:" userpass
+read -r -p  "* Enter the email of the sandbox user to notify (Student email):" email_student
 
 # Creating first function to create a bucket 
 
@@ -23,7 +24,7 @@ function initsandbox()
    aws cloudformation create-stack \
   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
   --stack-name sandbox-init-stack    --template-body file://aws-user-service.yaml \
-  --parameters ParameterKey=UserName,ParameterValue=$username ParameterKey=Password,ParameterValue=$userpass --region eu-west-3
+  --parameters ParameterKey=UserName,ParameterValue=$username ParameterKey=Password,ParameterValue=$userpass ParameterKey=SESToEmail,ParameterValue=$email_student  --region eu-west-3
 
   # Waite until the stack status is CREATE_COMPLETE
    
