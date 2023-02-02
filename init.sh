@@ -35,11 +35,13 @@ function initsandbox()
  #  done
 }
 
-function invokeUserLambda()    {
+function invokeUserLambda()    
+{
+   touch response.json
+   
    aws lambda invoke \
     --function-name caller \
-    --region eu-west-3 
-    #  response1.json
+    --region eu-west-3  response.json
 }
 
 # Creating Second function to tag a bucket 
