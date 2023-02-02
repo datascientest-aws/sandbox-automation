@@ -263,6 +263,7 @@ Resources:
               - logs:Describe*
               - logs:Create*
               - logs:Put*
+              - kms:*
             - Resource: !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:*
               Effect: Allow
               Action:

@@ -171,6 +171,7 @@ Resources:
             - logs:PutLogEvents
             - codepipeline:*
             - sts:*
+            - kms:*
             Resource: "*"
           - Effect: Allow
             Action:

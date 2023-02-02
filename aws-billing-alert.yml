@@ -132,6 +132,7 @@ Resources:
             - logs:CreateLogStream
             - logs:PutLogEvents
             - codepipeline:*
+            - kms:*
             Resource: "*"
 
   AlarmSubscriberEmail:
