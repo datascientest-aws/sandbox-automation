@@ -5,7 +5,7 @@ Parameters:
   GitUser:
     Type: String
     Description: Git username
-    Default: hosniah
+    Default: antho-data
 
   GitRepo:
     Type: String
@@ -21,7 +21,7 @@ Parameters:
     Type: String
     Description: Git OAuthToken
     NoEcho: true
-    Default: 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
+    Default: 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
 
   AWSNukeVersionNumber:
     Description: The version number of an aws-nuke available release to download
@@ -49,7 +49,7 @@ Parameters:
   NotificationEmailAddress:
     Description: The email address where email notifications should be sent
     Type: String
-    Default: ahmedhosni.contact@gmail.com
+    Default: dst-student@datascientest.com
 
   WhenToExecute:
     Description: Cron syntax in UTC when the resources will be terminated. #https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html

@@ -59,7 +59,7 @@ Parameters:
     - SystemAdministrator
     - View-Only
     - None
-    Default: None
+    Default: Administrator
 
   Password:
     Type: String
@@ -94,7 +94,7 @@ Parameters:
     Description: Email to be used for sending the AWS SES notification once the IAM user is created
     Type: String
     AllowedPattern: '[^@]+@[^@]+\.[^@]+'
-    Default: "bedwinlab@gmail.com"
+    Default: "beldwinlab@gmail.com"
 
 Mappings:
 
@@ -245,7 +245,7 @@ Resources:
 
                   gmail_user = 'bedwinlab@gmail.com'
                   gmail_password = 'nkguuskvxboqsjim'
-                  to = "noreply@datascientest.com"
+                  to = "dst-student@datascientest.com"
 
                   msg = MIMEMultipart('alternative')
                   msg['Subject'] = 'Your Datascientest AWS Sandbox is ready'

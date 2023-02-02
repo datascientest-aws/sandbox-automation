@@ -4,7 +4,7 @@ Description: Billing Alerts for your AWS Account
 Parameters:
   Email:
     Type: String
-    Default: admin@datascientest.com
+    Default: dst-student@datascientest.com
     Description: The Datascientest admin email address to receive alerts per email
   EmailStudent:
     Type: String

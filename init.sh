@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script trigger the Datascientest Sandbox creation with the initla CloudFormation templates.
 # If the S3 Bucket has not been created, this Script will create S3 bucket and tag the bucket with appropriate name.
@@ -37,6 +37,7 @@ function initsandbox()
 function invokeUserLambda()    {
    aws lambda invoke \
     --function-name caller \
+    --region eu-west-3 \ 
     response1.json
 }
 
@@ -44,6 +45,7 @@ function invokeUserLambda()    {
 function invokeConfigLambda()    {
    aws lambda invoke \
     --function-name sandboxTrigger \
+    --region eu-west-3 \
     response2.json
 
  #   --payload '{ "name": "Bob" }' \

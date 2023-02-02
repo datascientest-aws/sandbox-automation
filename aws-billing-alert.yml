@@ -4,18 +4,18 @@ Description: Billing Alerts for AWS Account
 Parameters:
   Email:
     Type: String
-    Default: your@email.com
+    Default: dst-student@datascientest.com
     Description: Your email address to receive alarms per email
 
   WarningThreshold:
     Description: The billing amount considered as a warning to start the aws-freeze pipeline
     Type: String
-    Default: 100
+    Default: 150
 
   CriticalThreshold:
     Description: The maximum billing amount to make the user ReadOnly and trigger the aws-wipe pipeline
     Type: String
-    Default: 150
+    Default: 200
 
 Mappings:
   EstimatedCharges:
