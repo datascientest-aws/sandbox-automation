@@ -43,7 +43,10 @@ Resources:
 
   BillingAlertTopic:
     Type: AWS::SNS::Topic
-
+    Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
   LambdaFunction:
     Type: 'AWS::Lambda::Function'
     Properties:
