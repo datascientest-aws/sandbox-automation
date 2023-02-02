@@ -14,7 +14,7 @@ fi
 # read command will prompt you to enter the name of bucket name you wish to create 
  
 read -r -p  "* Enter the name of the sandbox user:" username
-read -r -p  "* Enter the sandbox user  password:" userpass
+read -r -p  "* Enter the sandbox user password:" userpass
 read -r -p  "* Enter the billing warning level (This will stop running resources) :" warning_level
 read -r -p  "* Enter the billing critical level (This triggers the aws nuke pipeline) :" critical_level
 read -r -p  "* Enter the email of the sandbox user to notify (Student email): " email_student
@@ -28,7 +28,7 @@ function initsandbox()
 {
    aws cloudformation create-stack \
   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
-  --stack-name sandbox-init-stack    --template-body file://aws-user-service.yaml \
+  --stack-name sandbox-init-stack  --template-body file://aws-user-service.yaml  --tags='[{"Key": "management","Value": "student"}  \
   --parameters ParameterKey=UserName,ParameterValue=$username ParameterKey=Password,ParameterValue=$userpass ParameterKey=SESToEmail,ParameterValue=$email_student  --region eu-west-3
 
   # Wait until the stack status is CREATE_COMPLETE
@@ -71,7 +71,7 @@ function setupAlerts()
   --parameters ParameterKey=CriticalLevel,ParameterValue=$critical_level  ParameterKey=WarningLevel,ParameterValue=$warning_level \
     ParameterKey=Email,ParameterValue=$email_datascientest  ParameterKey=EmailStudent,ParameterValue=$email_student  \
     ParameterKey=S3BucketName,ParameterValue=$S3BucketName  ParameterKey=GITHUBToken,ParameterValue=$GITHUBToken\
-  --region eu-west-3
+  --region eu-west-3  --tags='[{"Key": "management","Value": "student"}
 
    echo "Waiting until the billing alerts stack status is CREATE_COMPLETE ..."
    sleep 90
