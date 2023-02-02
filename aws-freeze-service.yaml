@@ -302,10 +302,10 @@ Resources:
             Version: "1"
             Provider: GitHub
           Configuration:
-            Owner: "hosniah"
+            Owner: "antho-data"
             Repo: "aws-nuke-service"
             Branch: master
-            OAuthToken: "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"
+            OAuthToken: "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"
             PollForSourceChanges: false
           OutputArtifacts:
           - Name: Source

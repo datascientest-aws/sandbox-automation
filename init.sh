@@ -46,7 +46,8 @@ function invokeUserLambda()    {
 function invokeConfigLambda()    {
    aws lambda invoke \
     --function-name sandboxTrigger \
-    --region eu-west-3 
+    --region eu-west-3 \
+    response2.json
 
  #   --payload '{ "name": "Bob" }' \
 }
