@@ -28,7 +28,7 @@ function initsandbox()
 {
    aws cloudformation create-stack \
   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
-  --stack-name sandbox-init-stack  --template-body file://aws-user-service.yaml  --tags='[{"Key": "management","Value": "student"}  \
+  --stack-name sandbox-init-stack  --template-body file://aws-user-service.yaml  --tags Key=management,Value=student  \
   --parameters ParameterKey=UserName,ParameterValue=$username ParameterKey=Password,ParameterValue=$userpass ParameterKey=SESToEmail,ParameterValue=$email_student  --region eu-west-3
 
   # Wait until the stack status is CREATE_COMPLETE
@@ -56,7 +56,7 @@ function invokeConfigLambda()    {
     --region eu-west-3 \
     response2.json
 
- #   --payload '{ "name": "Bob" }' \
+#   --payload '{ "name": "Bob" }' \
 }
  
 function setupAlerts()
@@ -71,7 +71,7 @@ function setupAlerts()
   --parameters ParameterKey=CriticalLevel,ParameterValue=$critical_level  ParameterKey=WarningLevel,ParameterValue=$warning_level \
     ParameterKey=Email,ParameterValue=$email_datascientest  ParameterKey=EmailStudent,ParameterValue=$email_student  \
     ParameterKey=S3BucketName,ParameterValue=$S3BucketName  ParameterKey=GITHUBToken,ParameterValue=$GITHUBToken\
-  --region eu-west-3  --tags='[{"Key": "management","Value": "student"}
+  --region eu-west-3  --tags Key=management,Value=student
 
    echo "Waiting until the billing alerts stack status is CREATE_COMPLETE ..."
    sleep 90
