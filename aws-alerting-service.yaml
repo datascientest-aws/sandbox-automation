@@ -32,10 +32,6 @@ Resources:
   # Alert for the warning level: Freeze the resources
   BillingAlert:
     Type: AWS::CloudWatch::Alarm
-    Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       AlarmActions:
         - !Ref MySnsTopic
       AlarmDescription:
@@ -58,7 +54,6 @@ Resources:
   # Alert for the Critical level: Delete all the resources
   BillingNukeAlert:
     Type: AWS::CloudWatch::Alarm
-    Properties:
       AlarmActions:
         - !Ref MyNukeTopic
       AlarmDescription:
