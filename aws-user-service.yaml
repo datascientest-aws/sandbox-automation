@@ -332,7 +332,7 @@ Resources:
       Role: !GetAtt 'LambdaRole.Arn'
       MemorySize: 2048
       Runtime: python3.9
-      Timeout: 60
+      Timeout: 100
       Environment:
         Variables:
           S3_GITHUB_TEMPLATES_NAME:
