@@ -303,9 +303,6 @@ Resources:
   LambdaPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       ManagedPolicyName: DatascientestUserCreationPolicy
       Description: Managed policy for a Lambda function launched by CloudFormation
       PolicyDocument:
