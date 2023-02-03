@@ -57,13 +57,16 @@ function invokeConfigLambda()    {
     response2.json
 
 #   --payload '{ "name": "Bob" }' \
+sleep 20
 }
- 
+
+
 function setupAlerts()
 {
 
    #Fetch the S3 bucket name, it has been createed randomly by the first stack:
    S3BucketName=$(aws s3api list-buckets --query 'Buckets[*].[Name]' --output text | grep "cfn-datascientest-sandbox-templates-repo" | head -n 1)
+   aws s3api list-objects --bucket S3BucketName --query 'Contents[].[Key]' --output text | xargs -n 1 aws s3api put-object-tagging --bucket S3BucketName --tagging 'TagSet=[{Key=management,Value=student}]' --key
 
    aws cloudformation create-stack \
   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" "CAPABILITY_AUTO_EXPAND" \
