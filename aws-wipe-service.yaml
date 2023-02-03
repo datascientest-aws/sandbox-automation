@@ -21,7 +21,7 @@ Parameters:
     Type: String
     Description: Git OAuthToken
     NoEcho: true
-    Default: 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
+    Default: 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
 
   AWSNukeVersionNumber:
     Description: The version number of an aws-nuke available release to download
