@@ -415,7 +415,7 @@ Resources:
                 - aws iam create-account-alias --account-alias $ACCOUNT_ALIAS
                 - sed -i "s/0000xx0000/$ACCOUNT_ID/g" $AWS_NukeConfigFile
                 - echo "Executing Nuke...."
-                - aws-nuke --profile $AWS_NukeProfileName --config $AWS_NukeConfigFile --force
+                - aws-nuke --profile $AWS_NukeProfileName --config $AWS_NukeConfigFile --force --no-dry-run
   CodeBuildLogGroup:
     Type: "AWS::Logs::LogGroup"
     Properties:
