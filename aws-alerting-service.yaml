@@ -59,9 +59,6 @@ Resources:
   BillingNukeAlert:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       AlarmActions:
         - !Ref MyNukeTopic
       AlarmDescription:
