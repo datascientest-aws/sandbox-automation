@@ -1,6 +1,6 @@
 function handler () {
    topic=$(aws sns list-topics | jq -r ".Topics[ ] | .TopicArn" | grep BillingEmailAlertTopic )
-   aws sns publish --topic-arn $topic --message “You have reached the limit of your AWS sandbox budget. We’ll proceed with the reset of this environment and destroy all the resources.”
+   aws sns publish --topic-arn $topic --message "You have reached the limit of your AWS sandbox budget. We’ll proceed with the reset of this environment and destroy all the resources."
 
     aws cloudformation create-stack --stack-name cfn-nuke-stack  \
     --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
