@@ -32,6 +32,7 @@ Resources:
   # Alert for the warning level: Freeze the resources
   BillingAlert:
     Type: AWS::CloudWatch::Alarm
+    Properties:
       AlarmActions:
         - !Ref MySnsTopic
       AlarmDescription:
@@ -54,6 +55,7 @@ Resources:
   # Alert for the Critical level: Delete all the resources
   BillingNukeAlert:
     Type: AWS::CloudWatch::Alarm
+    Properties:
       AlarmActions:
         - !Ref MyNukeTopic
       AlarmDescription:
@@ -77,9 +79,6 @@ Resources:
   MySnsTopic:
     Type: AWS::SNS::Topic
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       Subscription:
         - Protocol: lambda
           Endpoint: !GetAtt TopicConsumerFunction1.Arn   
@@ -88,9 +87,6 @@ Resources:
   MyNukeTopic:
     Type: AWS::SNS::Topic
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       Subscription:
         - Protocol: lambda
           Endpoint: !GetAtt TopicConsumerNuke.Arn  
@@ -107,9 +103,6 @@ Resources:
   TopicConsumerNuke:
     Type: 'AWS::Lambda::Function'
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
@@ -136,9 +129,6 @@ Resources:
   TopicConsumerFunction1:
     Type: 'AWS::Lambda::Function'
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
@@ -156,9 +146,6 @@ Resources:
   LambdaFunctionRole:
     Type: AWS::IAM::Role
     Properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -193,13 +180,10 @@ Resources:
             - 'sns:Unsubscribe'
             Resource: "*"
 
-# SNS Topics and Subscriptions for Notification
+# SNS TOpics and Subscriptions for Notification
   BillingEmailAlertTopic:
     Type: AWS::SNS::Topic
-    properties:
-      Tags: 
-        - Key: "management"
-          Value: "student" 
+
   AlarmSubscriberAdminEmail:
     Type: AWS::SNS::Subscription
     Properties:
