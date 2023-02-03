@@ -240,7 +240,7 @@ Resources:
             Service: codebuild.amazonaws.com
       Path: /
       RoleName: !Join
-        - '-'
+        -'-'
         - - !Ref 'AWS::StackName'
           - CodeBuild
 
