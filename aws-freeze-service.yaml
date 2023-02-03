@@ -232,6 +232,10 @@ Resources:
             Service:
             - codepipeline.amazonaws.com
         Version: '2012-10-17'
+        RoleName: !Join
+          - '-'
+          - - !Ref 'AWS::StackName'
+          - CodePipeline
       Path: "/"
       Policies:
         - PolicyName: root
