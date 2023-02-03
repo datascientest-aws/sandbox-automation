@@ -287,7 +287,7 @@ Resources:
       Tags: 
         - Key: "management"
           Value: "student" 
-      RoleName: DatascientestUSerCreationRole
+      RoleName: DatascientestUserCreationRole
       Description: An execution role for a Lambda function launched by CloudFormation
       ManagedPolicyArns:
         - !Ref LambdaPolicy
