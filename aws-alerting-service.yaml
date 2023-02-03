@@ -115,7 +115,7 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
-      Timeout: 30
+      Timeout: 60
       Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
       Environment:
@@ -141,7 +141,7 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
-      Timeout: 30
+      Timeout: 60
       Layers: ["arn:aws:lambda:eu-west-3:744348701589:layer:bash:8"]
       MemorySize: 2048
       Environment:
