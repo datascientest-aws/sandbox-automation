@@ -180,6 +180,9 @@ Resources:
   S3GithubTemplatesName:
     Type: AWS::S3::Bucket
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       BucketName: !Join
         - "-"
         - - "cfn-datascientest-sandbox-templates-repo"
@@ -196,6 +199,9 @@ Resources:
   LambdaFunctionUserNotification:
     Type: AWS::Lambda::Function
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       FunctionName: caller
       Handler: index.lambda_handler
       Role: !GetAtt 'LambdaRole.Arn'
@@ -278,6 +284,9 @@ Resources:
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       RoleName: DatascientestUSerCreationRole
       Description: An execution role for a Lambda function launched by CloudFormation
       ManagedPolicyArns:
@@ -294,7 +303,10 @@ Resources:
   LambdaPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
-      ManagedPolicyName: DatascientestUSerCreationPolicy
+      Tags: 
+        - Key: "management"
+          Value: "student" 
+      ManagedPolicyName: DatascientestUserCreationPolicy
       Description: Managed policy for a Lambda function launched by CloudFormation
       PolicyDocument:
         Version: '2012-10-17'
@@ -315,6 +327,9 @@ Resources:
   SandboxInitConsumerFunction:
     Type: 'AWS::Lambda::Function'
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       FunctionName: sandboxTrigger
       Handler: index.lambda_handler
       Role: !GetAtt 'LambdaRole.Arn'
