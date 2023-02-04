@@ -26,8 +26,8 @@ Parameters:
   AWSNukeVersionNumber:
     Description: The version number of an aws-nuke available release to download
     Type: String
-    Default: 2.21.0
-
+    Default: "2.21.0"
+    
   AWSNukeConfigFile:
     Description: The directory path to the config file used by aws-nuke
     Type: String
