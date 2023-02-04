@@ -47,7 +47,7 @@ Resources:
       EvaluationPeriods: 1
       MetricName: EstimatedCharges
       Namespace: AWS/Billing
-      Period: 30
+      Period: 21600
       TreatMissingData: ignore
       Statistic: Maximum
       Threshold:  !Ref WarningLevel 
@@ -70,7 +70,7 @@ Resources:
       EvaluationPeriods: 1
       MetricName: EstimatedCharges
       Namespace: AWS/Billing
-      Period: 30
+      Period: 21600
       TreatMissingData: ignore
       Statistic: Maximum
       Threshold:  !Ref CriticalLevel 
