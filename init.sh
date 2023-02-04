@@ -12,7 +12,8 @@ if ! grep aws_access_key_id ~/.aws/config; then
 fi
  
 # read command will prompt you to enter the name of bucket name you wish to create 
- 
+
+read -r -p  "* Choose the account you want to deploy (format: student-[1-30]):" student
 read -r -p  "* Enter the name of the sandbox user:" username
 read -r -p  "* Enter the sandbox user password:" userpass
 read -r -p  "* Enter the billing warning level (This will stop running resources) :" warning_level
@@ -22,7 +23,8 @@ read -r -p  "* Enter the datascientest admin email to notify :" email_datascient
 read -r -p  "* Enter a valid Github token :"  GITHUBToken
 
 
-# Creating first function to create a bucket 
+# Choosing the account
+export AWS_PROFILE=$student
 
 function initsandbox()
 {
