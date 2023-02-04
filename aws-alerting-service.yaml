@@ -138,6 +138,9 @@ Resources:
   TopicConsumerFunction1:
     Type: 'AWS::Lambda::Function'
     Properties:
+      Tags: 
+        - Key: "management"
+          Value: "student" 
       Handler: index.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Runtime: provided
