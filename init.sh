@@ -13,7 +13,28 @@ fi
  
 # read command will prompt you to enter the name of bucket name you wish to create 
 
-read -r -p  "* Choose the account you want to deploy (format: student-[1-30]):" student
+read -r -p  "* Choose the account you want to deploy (format: student[1-30]):" student
+
+cat $HOME/.aws/credentials | grep -A1 "$student" | head -2
+echo
+# prompting for choice
+read -p "Do you want to proceed? (yes/no) " -t 30 yn
+
+if [ -z "$yn" ]
+then
+      echo -e "\nerror: no response detected"
+      exit 1
+fi
+
+case $yn in
+        yes ) echo ok, we will proceed;;
+        no ) echo exiting...;
+                exit;;
+        * ) echo invalid response;
+                exit 1;;
+esac
+
+
 read -r -p  "* Enter the name of the sandbox user:" username
 read -r -p  "* Enter the sandbox user password:" userpass
 read -r -p  "* Enter the billing warning level (This will stop running resources) :" warning_level
