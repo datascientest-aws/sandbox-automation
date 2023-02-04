@@ -2,7 +2,6 @@ function handler () {
     policy_arn='arn:aws:iam::aws:policy/ReadOnlyAccess'
     # Create the Readonly IAM group and assign the right managed policy
     # https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#policies/arn:aws:iam::aws:policy/ReadOnlyAccess 
-    aws iam attach-group-policy --group-name "$group_name" --policy-arn "$policy_arn" 
 
     # Publish an SNS message to the right topic
     topic=$(aws sns list-topics | jq -r ".Topics[ ] | .TopicArn" | grep BillingEmailAlertTopic )
