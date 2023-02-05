@@ -5,7 +5,7 @@ function handler () {
 
     # Publish an SNS message to the right topic
     topic=$(aws sns list-topics | jq -r ".Topics[ ] | .TopicArn" | grep BillingEmailAlertTopic )
-    aws sns publish --topic-arn $topic --message 'You reached the warning level of your AWS sandbox budget. We’ll stop your was resources to reduce unwanted billing.'
+    aws sns publish --topic-arn $topic --message 'You have reached the warning level of your AWS sandbox budget. We’ll stop your resources to reduce unwanted billing.'
 
     # Make all users Read Only by adding them to the right Policy
     for user in $(aws iam list-users --query '[Users[].UserName]' --output text) ; do 
