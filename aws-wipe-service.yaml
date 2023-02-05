@@ -10,12 +10,12 @@ Parameters:
   GitRepo:
     Type: String
     Description: Git repository
-    Default: aws-nuke-service
+    Default: datascientest-aws 
 
   GitBranch:
     Type: String
     Description: Git branch
-    Default: master
+    Default: main
 
   GitToken:
     Type: String
