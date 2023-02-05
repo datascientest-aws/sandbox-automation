@@ -4,7 +4,7 @@
 regions: #Region to target
 - global
 - eu-west-3
-- us-west-1
+- us-east-1
 #  - eu-west-1
 #- ap-southeast-2
 #- AWS Organizations SCP Blocking access to the below regions. https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html#example-scp-deny-region
