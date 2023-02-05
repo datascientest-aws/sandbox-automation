@@ -1,0 +1,182 @@
+#config.yaml
+
+#aws-nuke-config file
+regions: #Region to target
+- global
+- eu-west-3
+- us-west-1
+#  - eu-west-1
+#- ap-southeast-2
+#- AWS Organizations SCP Blocking access to the below regions. https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html#example-scp-deny-region
+# - us-east-1
+# - us-east-2
+# - us-west-1
+# - ap-east-1
+# - ap-south-1
+# - ap-northeast-3
+# - ap-northeast-2
+# - ap-southeast-1
+# - ap-northeast-1
+# - ca-central-1
+# - eu-central-1
+# - eu-west-1
+# - eu-west-2
+# - eu-west-3
+# - eu-north-1
+# - me-south-1
+# - sa-east-1
+# - cn-north-1
+# - cn-northwest-1
+# - us-gov-east-1
+# - us-gov-west-1
+
+account-blacklist:
+- 516808433544
+- 972979734155
+- 296403104788
+- 570039516768
+- 705717884493
+
+accounts:
+  # Account Ids to target. Will be updated by sed in AWS CodeBuild to target the current executing account
+  707809188586:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  894426806671:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  285679047437:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  714562008810:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  992222228210:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  203271543287:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  564088821524:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  424571028400:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  693023368022:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  962480255828:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  686270819255:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  284445534808:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  501984417376:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  477995668264:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  595058326297:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  484497069811:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  137893875086:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  486183534890:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  957507561258:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  870669727545:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  690456518676:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  126316686161:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  969799237091:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  575977136211:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  131674823919:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  276555828362:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  678668390304:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  296615500438:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  472454369658:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+      
+resource-types:
+  excludes:
+  - CodePipelinePipeline
+  - CodeBuildProject
+  - IAMRolePolicyAttachment
+  - IAMRolePolicy
+
+
+presets:
+  aws-organizations:
+    filters:
+      IAMRole:
+      - "OrganizationAccountAccessRole"
+    
+  aws-service:
+    filters:
+      IAMRole:
+      - "AWSServiceRoleForOrganizations"
+
+feature-flags:
+  disable-deletion-protection:
+    RDSInstance: true
+    EC2Instance: true
+    CloudformationStack: true
