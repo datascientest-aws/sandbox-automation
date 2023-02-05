@@ -69,14 +69,14 @@ function invokeUserLambda()
    
    aws lambda invoke \
     --function-name caller \
-    --region eu-west-3  response.json
+    --region us-east-1 response.json
 }
 
 # Creating Second function to tag a bucket 
 function invokeConfigLambda()    {
    aws lambda invoke \
     --function-name sandboxTrigger \
-    --region eu-west-3 \
+    --region us-esat-1 \
     response2.json
 
 #   --payload '{ "name": "Bob" }' \
