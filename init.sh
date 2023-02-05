@@ -96,7 +96,7 @@ function setupAlerts()
   --parameters ParameterKey=CriticalLevel,ParameterValue=$critical_level  ParameterKey=WarningLevel,ParameterValue=$warning_level \
     ParameterKey=Email,ParameterValue=$email_datascientest  ParameterKey=EmailStudent,ParameterValue=$email_student  \
     ParameterKey=S3BucketName,ParameterValue=$S3BucketName  ParameterKey=GITHUBToken,ParameterValue=$GITHUBToken\
-  --region eu-west-3
+  --region us-east-1
 
    echo "Waiting until the billing alerts stack status is CREATE_COMPLETE ..."
    sleep 90
