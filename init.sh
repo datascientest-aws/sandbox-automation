@@ -52,7 +52,7 @@ function initsandbox()
    aws cloudformation create-stack \
   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" \
   --stack-name sandbox-init-stack  --template-body file://aws-user-service.yaml \
-  --parameters ParameterKey=UserName,ParameterValue=$username ParameterKey=Password,ParameterValue=$userpass ParameterKey=SESToEmail,ParameterValue=$email_student  --region eu-west-3
+  --parameters ParameterKey=UserName,ParameterValue=$username ParameterKey=Password,ParameterValue=$userpass ParameterKey=SESToEmail,ParameterValue=$email_student  --region us-east-1
 
   # Wait until the stack status is CREATE_COMPLETE
    
