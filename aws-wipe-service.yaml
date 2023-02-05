@@ -10,7 +10,7 @@ Parameters:
   GitRepo:
     Type: String
     Description: Git repository
-    Default: datascientest-aws 
+    Default: sandbox-automation 
 
   GitBranch:
     Type: String
