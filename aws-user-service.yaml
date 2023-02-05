@@ -247,11 +247,11 @@ Resources:
                         <h2>Your Datascientest AWS Sandbox is live!</h2>
                         <br/>
                         <p>You have been granted access to an aws sandbox environment.
-                        You could login to AWS using the following AWS account id: <b> {user_aws_account_id} </b> </p> 
-                        <p> For console access, use the following credentials:</p>
+                        You could login to <a href="https://aws.amazon.com/" target="_blank">Amazon Web Services</a> using the following AWS account id: <b> {user_aws_account_id} </b> </p> 
+                        <p> For console (web browser) access, use the following credentials:</p>
                           - <b>username </b>: {user_name}
                           - <b>password </b>: {user_pass}
-                        <p>For programatic access, use the following access key and secret key within your aws cli:</p>
+                        <p>For programatic access, please read the <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html" target="_blank">documentation</a> and use the following access key and secret key within your aws cli:</p>
                           - <b>AccessKey </b>: {user_access_key}
                           - <b>SecretKey </b>: {user_secret_key}
                         </body>
