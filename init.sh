@@ -18,7 +18,7 @@ read -r -p  "* Choose the account you want to deploy (format: student[1-30]):" s
 cat $HOME/.aws/credentials | grep -A1 "$student" | head -2
 echo
 # prompting for choice
-read -p "Do you want to proceed? (yes/no) " -t 30 yn
+read -p "Do you want to proceed? (y/n) " -t 30 yn
 
 if [ -z "$yn" ]
 then
@@ -27,8 +27,8 @@ then
 fi
 
 case $yn in
-        yes ) echo ok, we will proceed;;
-        no ) echo exiting...;
+        y ) echo ok, we will proceed;;
+        n ) echo exiting...;
                 exit;;
         * ) echo invalid response;
                 exit 1;;
