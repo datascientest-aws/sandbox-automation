@@ -110,5 +110,5 @@ invokeConfigLambda
 setupAlerts
 
 #tagbucket       # calling our tagbucket function
-aws s3api list-objects --bucket S3BucketName --prefix * --query 'Contents[].[Key]' --output text | xargs -n 1 aws s3api put-object-tagging --bucket S3BucketName --tagging 'TagSet=[{Key=management,Value=student}]' --key
+#aws s3api list-objects --bucket S3BucketName --prefix * --query 'Contents[].[Key]' --output text | xargs -n 1 aws s3api put-object-tagging --bucket S3BucketName --tagging 'TagSet=[{Key=management,Value=student}]' --key
 echo "** The sandbox-inint-stack AWS Cloudformation stack has been created successfully!"
