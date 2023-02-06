@@ -155,7 +155,47 @@ accounts:
     presets:
       - "aws-organizations"
       - "aws-service"
-      
+  925479565843:
+    presets:
+      - "aws-organizations"
+      - "aws-service" 
+  700778905650:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  690456518676:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  566844520118:
+   presets:
+     - "aws-organizations"
+     - "aws-service"     
+  844112306741:
+    presets:
+      - "aws-organizations"
+      - "aws-service"      
+  745854088131:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  539158963566:
+    presets:
+      - "aws-organizations"
+      - "aws-service" 
+  441131366154:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  159398445531:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  813812644529:
+    presets:
+      - "aws-organizations"
+      - "aws-service"
+  
 resource-types:
   excludes:
   - CodePipelinePipeline
