@@ -30,7 +30,7 @@ regions: #Region to target
 # - us-gov-east-1
 # - us-gov-west-1
 
-account-blacklist:
+account-blocklist:
 - 516808433544
 - 972979734155
 - 296403104788
