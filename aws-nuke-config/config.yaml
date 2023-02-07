@@ -123,10 +123,6 @@ accounts:
     presets:
       - "aws-organizations"
       - "aws-service"
-  690456518676:
-    presets:
-      - "aws-organizations"
-      - "aws-service"
   126316686161:
     presets:
       - "aws-organizations"
