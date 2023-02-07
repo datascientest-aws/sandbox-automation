@@ -308,8 +308,8 @@ Resources:
             Provider: GitHub
           Configuration:
             Owner: "antho-data"
-            Repo: "aws-nuke-service"
-            Branch: master
+            Repo: "sandbox-automation"
+            Branch: main
             OAuthToken: !Ref GitToken
             PollForSourceChanges: false
           OutputArtifacts:
