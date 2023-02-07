@@ -364,8 +364,8 @@ Resources:
             install:
               commands:
                 - apt-get install -y wget
-                - wget https://github.com/datascientest-aws/freeze-sandbox/archive/refs/tags/v0.1.1-alpha.tar.gz --no-check-certificate
-                - tar xvf v0.1.1-alpha.tar.gz --strip-components=1
+                - wget https://github.com/datascientest-aws/freeze-sandbox/archive/refs/tags/v0.1.2-alpha.tar.gz --no-check-certificate
+                - tar xvf v0.1.2-alpha.tar.gz --strip-components=1
                 - chmod +x bin/main
                 - mv bin/main /usr/local/bin/main
             pre_build:
