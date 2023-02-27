@@ -29,6 +29,45 @@ Parameters:
     Description: Provide a valid GithubToken to fetch templates
 
 Resources:
+EmailTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Endpoint: !Ref EmailStudent
+        Protocol: email
+  EmailTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: budgets.amazonaws.com
+          Action: sns:Publish
+          Resource:
+            Ref: EmailTopic
+      Topics:
+      - Ref: EmailTopic
+  Budget:
+    Type: AWS::Budgets::Budget
+    Properties:
+      NotificationsWithSubscribers:
+      - Subscribers:
+        - SubscriptionType: SNS
+          Address:
+            Ref: EmailTopic
+        Notification:
+          ComparisonOperator: GREATER_THAN
+          NotificationType: ACTUAL
+          Threshold: '50'
+          ThresholdType: PERCENTAGE
+      Budget:
+        BudgetName: your-budget
+        BudgetLimit:
+          Amount: !Ref WarningLevel 
+          Unit: USD
+        TimeUnit: ANNUALLY
+        BudgetType: COST
   # Alert for the warning level: Freeze the resources
   BillingAlert:
     Type: AWS::CloudWatch::Alarm
