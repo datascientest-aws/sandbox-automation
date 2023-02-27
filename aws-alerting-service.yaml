@@ -59,7 +59,25 @@ EmailTopic:
         Notification:
           ComparisonOperator: GREATER_THAN
           NotificationType: ACTUAL
+          Threshold: '25'
+          ThresholdType: PERCENTAGE
+      - Subscribers:
+        - SubscriptionType: SNS
+          Address:
+            Ref: EmailTopic
+        Notification:
+          ComparisonOperator: GREATER_THAN
+          NotificationType: ACTUAL
           Threshold: '50'
+          ThresholdType: PERCENTAGE
+      - Subscribers:
+        - SubscriptionType: SNS
+          Address:
+            Ref: EmailTopic
+        Notification:
+          ComparisonOperator: GREATER_THAN
+          NotificationType: ACTUAL
+          Threshold: '75'
           ThresholdType: PERCENTAGE
       Budget:
         BudgetName: your-budget
