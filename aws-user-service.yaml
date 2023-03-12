@@ -259,7 +259,7 @@ Resources:
                                   """
 
                   gmail_user = 'dst-student@datascientest.com'
-                  gmail_password = 'cvljwledvuhxlvcd'
+                  gmail_password = 'HIDEN'
                   to = to_email
 
                   msg = MIMEMultipart('alternative')
